@@ -10,6 +10,8 @@ initiated.
 
 ## Document History
 
+03-07-2026 Corrected `auth_token.scope` value in example payload from `transfer` to `change_registrar`, and clarified auth token validity period as 14 days
+
 01-07-2026 Added error response codes and example error response
 
 22-06-2026 Clarified purpose of contact element and contact cloning behaviour during transfer
@@ -58,7 +60,7 @@ will be passed as the `X-API-KEY` header in the request.
 ### Example Payload
 
 - Domain name
-- Auth token (short-lived and tied to this specific transfer intention)
+- Auth token (valid for 14 days and tied to this specific domain transfer intention)
 - Registrant reference
 - Contact information (in accordance with consent)
 - Timestamp of consent
@@ -92,7 +94,7 @@ will automatically clone the complete contact dataset and assign it a new contac
 | `domains[].domain_name` | string | Yes | The domain name to transfer (e.g. `eksempel.dk`) |
 | `domains[].auth_token.value` | string | Yes | The auth token authorizing the transfer |
 | `domains[].auth_token.expires_at` | string (ISO 8601) | Yes | Expiry timestamp of the auth token |
-| `domains[].auth_token.scope` | string | Yes | Scope of the token — always `transfer` for this flow |
+| `domains[].auth_token.scope` | string | Yes | Scope of the token — always `change_registrar` for this flow |
 
 **Example 1 — Individual registrant** (`vat_number` and `p_number` are `null`):
 
@@ -123,7 +125,7 @@ will automatically clone the complete contact dataset and assign it a new contac
       "auth_token": {
         "value": "token-domain-1",
         "expires_at": "2026-04-17T12:00:00Z",
-        "scope": "transfer"
+        "scope": "change_registrar"
       }
     },
     {
@@ -131,7 +133,7 @@ will automatically clone the complete contact dataset and assign it a new contac
       "auth_token": {
         "value": "token-domain-2",
         "expires_at": "2026-04-17T12:00:00Z",
-        "scope": "transfer"
+        "scope": "change_registrar"
       }
     },
     {
@@ -139,7 +141,7 @@ will automatically clone the complete contact dataset and assign it a new contac
       "auth_token": {
         "value": "token-domain-3",
         "expires_at": "2026-04-17T12:05:00Z",
-        "scope": "transfer"
+        "scope": "change_registrar"
       }
     }
   ]
@@ -175,7 +177,7 @@ will automatically clone the complete contact dataset and assign it a new contac
       "auth_token": {
         "value": "token-domain-1",
         "expires_at": "2026-04-17T12:00:00Z",
-        "scope": "transfer"
+        "scope": "change_registrar"
       }
     }
   ]
@@ -217,9 +219,10 @@ Punktum dk supports the following HTTP status codes returned by the registrar en
 
 ### Example Error Response
 
-The `error` field is required for `4xx` responses. Its value will be displayed directly to
-the registrant in the Punktum dk self-service portal, so it must be written in clear,
-user-friendly language that is meaningful to a non-technical audience.
+The `error` field is required for `4xx` responses. This field is not yet supported in the current version
+of the Punktum dk self-service portal, but is planned for inclusion in the next release. Once available,
+its value will be displayed directly to the registrant, so it must be written in clear, user-friendly language
+that is meaningful to a non-technical audience.
 
 ```json
 {
